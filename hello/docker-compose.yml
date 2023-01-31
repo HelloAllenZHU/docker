@@ -1,0 +1,25 @@
+# 本文件用于组合多个容器之间的关系
+# 创建、启动所有容器：docker compose up
+# 停止、销毁所有容器：docker compose down(数据会丢失)
+# 其他命令：docker compose help
+
+
+# mysql 容器
+mysql:
+    image: mysql:5.7
+    environment:
+     - MYSQL_ROOT_PASSWORD=123456
+     - MYSQL_DATABASE=wordpress
+
+# web 容器
+web:
+    image: wordpress
+    links:
+     - mysql
+    environment:
+     - WORDPRESS_DB_PASSWORD=123456
+    ports:
+     - "127.0.0.3:8080:80"
+    working_dir: /var/www/html
+    volumes:
+     - wordpress:/var/www/html
